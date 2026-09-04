@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EV Battery Life & Health Prediction System{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b',
+                            dark: '#0a0f1d',
+                            card: '#111827',
+                            border: '#1f293d',
+                            accent: '#00f2fe'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#0e1424]/90 border-b border-slate-800/80 px-6 py-3.5 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <!-- Logo & Title -->
+            <a href="{{ url_for('index') }}" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-400 p-0.5 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-[#0b0f19] rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="zap" class="w-5 h-5 text-emerald-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">VoltPredict AI</span>
+                        <span class="px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">v2.0 NASA & CALCE</span>
+                    </div>
+                    <p class="text-xs text-slate-400">EV Battery SOH & RUL Prognostics Platform</p>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="flex items-center space-x-1 sm:space-x-2 bg-slate-900/80 p-1 rounded-xl border border-slate-800">
+                <a href="{{ url_for('index') }}" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 {% if request.path == '/' %}bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm{% else %}text-slate-300 hover:text-white hover:bg-slate-800/60{% endif %}">
+                    <i data-lucide="activity" class="w-4 h-4"></i>
+                    <span>Live Diagnostic</span>
+                </a>
+                <a href="{{ url_for('batch') }}" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 {% if request.path == '/batch' %}bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm{% else %}text-slate-300 hover:text-white hover:bg-slate-800/60{% endif %}">
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                    <span>NASA/CALCE Lab</span>
+                </a>
+                <a href="{{ url_for('analytics') }}" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 {% if request.path == '/analytics' %}bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm{% else %}text-slate-300 hover:text-white hover:bg-slate-800/60{% endif %}">
+                    <i data-lucide="line-chart" class="w-4 h-4"></i>
+                    <span>EDA & Models</span>
+                </a>
+            </nav>
+
+            <!-- Status Indicator -->
+            <div class="hidden md:flex items-center space-x-3 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-slate-800 text-xs text-slate-300">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span>ML Pipeline: <strong class="text-emerald-400 font-semibold">Active (R² = 0.98)</strong></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Body Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 bg-[#0e1424] py-5 px-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <span>Electric Vehicle Battery Life Prognostics System &bull; Powered by NASA PCoE & CALCE Degredation Framework</span>
+            <div class="flex items-center gap-4">
+                <span class="text-slate-400">Features: 11 Battery Parameters &bull; Dual RF/GBM Engine</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

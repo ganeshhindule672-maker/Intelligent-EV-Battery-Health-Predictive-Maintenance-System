@@ -1,0 +1,51 @@
+/* static/css/style.css */
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+/* Custom range input slider styling */
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #10b981;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    transition: transform 0.15s ease-in-out;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.25);
+    background: #34d399;
+}
+
+/* Glow effects */
+.glow-emerald {
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
+}
+
+.glow-cyan {
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+}
+
+/* Gauge styling */
+#sohCircle {
+    stroke-linecap: round;
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s ease;
+}
