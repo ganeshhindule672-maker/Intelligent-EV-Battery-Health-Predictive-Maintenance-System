@@ -26,45 +26,45 @@
     ],
     "metrics": {
         "soh": {
-            "r2": 1.0,
-            "mae": 0.0097,
-            "rmse": 0.0129
+            "r2": 0.9973,
+            "mae": 0.4772,
+            "rmse": 0.895
         },
         "rul": {
-            "r2": 0.9783,
-            "mae": 9.79,
-            "rmse": 15.37
+            "r2": 0.9829,
+            "mae": 1.08,
+            "rmse": 3.8
         }
     },
     "feature_importances": {
         "rul": {
-            "age": 0.4047,
-            "time": 0.2917,
-            "cycle": 0.0906,
-            "capacity": 0.0729,
-            "impedance": 0.046,
-            "soh": 0.0453,
-            "resistance": 0.0308,
-            "temperature": 0.0141,
-            "current": 0.0016,
-            "voltage": 0.0011,
-            "soc": 0.0011
+            "resistance": 0.3444,
+            "impedance": 0.1895,
+            "capacity": 0.1671,
+            "time": 0.089,
+            "soh": 0.0646,
+            "current": 0.054,
+            "temperature": 0.0475,
+            "age": 0.0158,
+            "cycle": 0.0106,
+            "voltage": 0.0096,
+            "soc": 0.0077
         },
         "soh": {
-            "capacity": 1.0,
-            "voltage": 0.0,
-            "current": 0.0,
-            "temperature": 0.0,
-            "cycle": 0.0,
-            "time": 0.0,
-            "resistance": 0.0,
-            "impedance": 0.0,
-            "soc": 0.0,
-            "age": 0.0
+            "capacity": 0.9066,
+            "age": 0.0291,
+            "impedance": 0.0218,
+            "resistance": 0.0148,
+            "temperature": 0.007,
+            "time": 0.0062,
+            "cycle": 0.0052,
+            "current": 0.004,
+            "voltage": 0.0037,
+            "soc": 0.0016
         }
     },
     "dataset_info": {
-        "rows": 5634,
+        "rows": 2567,
         "columns": [
             "battery_id",
             "cycle",

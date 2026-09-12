@@ -180,7 +180,9 @@ def api_retrain():
                 # Check in data dir
                 target_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', filename)
         else:
-            target_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'battery_aging_dataset.csv')
+            target_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'nasa_real_battery_dataset.csv')
+            if not os.path.exists(target_path):
+                target_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'battery_aging_dataset.csv')
 
         if not os.path.exists(target_path):
             return jsonify({"success": False, "error": f"Dataset file not found: {target_path}"}), 404
@@ -203,14 +205,21 @@ def api_retrain():
 @app.route('/api/analytics-data', methods=['GET'])
 def api_analytics_data():
     try:
-        data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'battery_aging_dataset.csv')
+        data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'nasa_real_battery_dataset.csv')
+        if not os.path.exists(data_path):
+            data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'battery_aging_dataset.csv')
         if not os.path.exists(data_path):
             return jsonify({"success": False, "error": "Training dataset not found"}), 404
 
         df = pd.read_csv(data_path)
         
-        # Select single battery profile for trajectory plotting
-        b_sample = df[df['battery_id'] == df['battery_id'].iloc[0]] if 'battery_id' in df.columns else df.iloc[:300]
+        # Select real NASA B0005 battery profile for trajectory plotting
+        if 'battery_id' in df.columns and 'B0005' in df['battery_id'].values:
+            b_sample = df[df['battery_id'] == 'B0005']
+        elif 'battery_id' in df.columns:
+            b_sample = df[df['battery_id'] == df['battery_id'].iloc[0]]
+        else:
+            b_sample = df.iloc[:300]
         
         trajectory = {
             "cycles": b_sample['cycle'].tolist(),
