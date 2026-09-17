@@ -1,0 +1,142 @@
+{
+    "model_metadata": {
+        "soh_features": [
+            "voltage",
+            "current",
+            "temperature",
+            "capacity",
+            "cycle",
+            "time",
+            "resistance",
+            "impedance",
+            "soc",
+            "age"
+        ],
+        "rul_features": [
+            "voltage",
+            "current",
+            "temperature",
+            "capacity",
+            "cycle",
+            "time",
+            "resistance",
+            "impedance",
+            "soc",
+            "soh",
+            "age"
+        ],
+        "metrics": {
+            "soh": {
+                "r2": 0.9976,
+                "mae": 0.4355,
+                "rmse": 0.8574,
+                "mape": 0.56,
+                "accuracy_score": 99.44,
+                "cv_5fold_mean_r2": 0.9969
+            },
+            "rul": {
+                "r2": 0.9844,
+                "mae": 1.07,
+                "rmse": 3.63,
+                "mape": 17.28,
+                "accuracy_score": 82.72,
+                "cv_5fold_mean_r2": 0.9871
+            },
+            "health_classification": {
+                "accuracy_percentage": 97.08,
+                "tiers": [
+                    "EXCELLENT",
+                    "GOOD",
+                    "DEGRADED",
+                    "CRITICAL"
+                ]
+            }
+        },
+        "feature_importances": {
+            "rul": {
+                "resistance": 0.3392,
+                "impedance": 0.1951,
+                "capacity": 0.1681,
+                "time": 0.0899,
+                "soh": 0.0634,
+                "current": 0.0515,
+                "temperature": 0.049,
+                "age": 0.0148,
+                "cycle": 0.0114,
+                "voltage": 0.0103,
+                "soc": 0.0073
+            },
+            "soh": {
+                "capacity": 0.9086,
+                "age": 0.0214,
+                "impedance": 0.0189,
+                "resistance": 0.0175,
+                "cycle": 0.0107,
+                "time": 0.0078,
+                "temperature": 0.0064,
+                "voltage": 0.0033,
+                "current": 0.0031,
+                "soc": 0.0023
+            }
+        },
+        "dataset_info": {
+            "name": "NASA Ames Prognostics Center of Excellence (PCoE) Real Battery Aging Dataset",
+            "rows": 2567,
+            "batteries_count": 34,
+            "columns": [
+                "battery_id",
+                "cycle",
+                "voltage",
+                "current",
+                "temperature",
+                "capacity",
+                "time",
+                "resistance",
+                "impedance",
+                "soc",
+                "soh",
+                "age",
+                "rul"
+            ]
+        }
+    },
+    "classification_report": {
+        "CRITICAL": {
+            "precision": 0.976878612716763,
+            "recall": 0.9825581395348837,
+            "f1-score": 0.9797101449275363,
+            "support": 172.0
+        },
+        "DEGRADED": {
+            "precision": 0.956140350877193,
+            "recall": 0.9478260869565217,
+            "f1-score": 0.9519650655021834,
+            "support": 115.0
+        },
+        "EXCELLENT": {
+            "precision": 0.9910714285714286,
+            "recall": 0.9736842105263158,
+            "f1-score": 0.9823008849557522,
+            "support": 114.0
+        },
+        "GOOD": {
+            "precision": 0.9565217391304348,
+            "recall": 0.9734513274336283,
+            "f1-score": 0.9649122807017544,
+            "support": 113.0
+        },
+        "accuracy": 0.9708171206225681,
+        "macro avg": {
+            "precision": 0.9701530328239547,
+            "recall": 0.9693799411128374,
+            "f1-score": 0.9697220940218065,
+            "support": 514.0
+        },
+        "weighted avg": {
+            "precision": 0.9709112083989152,
+            "recall": 0.9708171206225681,
+            "f1-score": 0.9708239612150609,
+            "support": 514.0
+        }
+    }
+}

@@ -19,6 +19,91 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
 
+
+def prepare_battery_dataset(data_path="data/battery_aging_dataset.csv"):
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"Dataset not found at {data_path}")
+
+    df = pd.read_csv(data_path)
+    df.columns = [c.strip().lower() for c in df.columns]
+
+    required_cols = ['voltage', 'current', 'temperature', 'capacity', 'cycle', 
+                     'time', 'resistance', 'impedance', 'soc']
+
+    for col in required_cols:
+        if col not in df.columns:
+            raise ValueError(f"Missing required column in dataset: '{col}'")
+
+    if 'age' not in df.columns:
+        df['age'] = df['cycle'] * 0.75
+    if 'soh' not in df.columns:
+        nominal_cap = df['capacity'].max()
+        df['soh'] = (df['capacity'] / nominal_cap) * 100.0
+    if 'rul' not in df.columns:
+        if 'battery_id' in df.columns:
+            max_cycles = df.groupby('battery_id')['cycle'].transform('max')
+            df['rul'] = max_cycles - df['cycle']
+        else:
+            max_cycle = df['cycle'].max()
+            df['rul'] = np.maximum(0, max_cycle - df['cycle'])
+
+    return df
+
+
+def evaluate_saved_models(data_path="data/battery_aging_dataset.csv", models_dir="models"):
+    df = prepare_battery_dataset(data_path)
+
+    soh_features = ['voltage', 'current', 'temperature', 'capacity', 'cycle', 
+                    'time', 'resistance', 'impedance', 'soc', 'age']
+    rul_features = ['voltage', 'current', 'temperature', 'capacity', 'cycle', 
+                    'time', 'resistance', 'impedance', 'soc', 'soh', 'age']
+
+    X_soh = df[soh_features].fillna(df[soh_features].median())
+    y_soh = df['soh']
+    X_rul = df[rul_features].fillna(df[rul_features].median())
+    y_rul = df['rul']
+
+    X_train_soh, X_test_soh, y_train_soh, y_test_soh = train_test_split(
+        X_soh, y_soh, test_size=0.2, random_state=42
+    )
+    X_train_rul, X_test_rul, y_train_rul, y_test_rul = train_test_split(
+        X_rul, y_rul, test_size=0.2, random_state=42
+    )
+
+    soh_model_path = os.path.join(models_dir, 'battery_soh_model.joblib')
+    rul_model_path = os.path.join(models_dir, 'battery_rul_model.joblib')
+
+    if not os.path.exists(soh_model_path) or not os.path.exists(rul_model_path):
+        raise FileNotFoundError(f"Saved models not found in '{models_dir}'. Train them first.")
+
+    soh_model = joblib.load(soh_model_path)
+    rul_model = joblib.load(rul_model_path)
+
+    y_pred_soh = soh_model.predict(X_test_soh)
+    y_pred_rul = rul_model.predict(X_test_rul)
+
+    metrics = {
+        'soh': {
+            'r2': float(r2_score(y_test_soh, y_pred_soh)),
+            'mae': float(mean_absolute_error(y_test_soh, y_pred_soh)),
+            'rmse': float(root_mean_squared_error(y_test_soh, y_pred_soh))
+        },
+        'rul': {
+            'r2': float(r2_score(y_test_rul, y_pred_rul)),
+            'mae': float(mean_absolute_error(y_test_rul, y_pred_rul)),
+            'rmse': float(root_mean_squared_error(y_test_rul, y_pred_rul))
+        }
+    }
+
+    return {
+        'dataset_info': {
+            'rows': len(df),
+            'features': list(df.columns)
+        },
+        'metrics': metrics
+    }
+
+
 def train_battery_models(data_path="data/battery_aging_dataset.csv", output_dir="models"):
     os.makedirs(output_dir, exist_ok=True)
     

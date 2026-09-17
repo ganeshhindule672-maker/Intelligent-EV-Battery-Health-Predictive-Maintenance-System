@@ -26,45 +26,62 @@
     ],
     "metrics": {
         "soh": {
-            "r2": 0.9973,
-            "mae": 0.4772,
-            "rmse": 0.895
+            "r2": 0.9976,
+            "mae": 0.4355,
+            "rmse": 0.8574,
+            "mape": 0.56,
+            "accuracy_score": 99.44,
+            "cv_5fold_mean_r2": 0.9969
         },
         "rul": {
-            "r2": 0.9829,
-            "mae": 1.08,
-            "rmse": 3.8
+            "r2": 0.9844,
+            "mae": 1.07,
+            "rmse": 3.63,
+            "mape": 17.28,
+            "accuracy_score": 82.72,
+            "cv_5fold_mean_r2": 0.9871
+        },
+        "health_classification": {
+            "accuracy_percentage": 97.08,
+            "tiers": [
+                "EXCELLENT",
+                "GOOD",
+                "DEGRADED",
+                "CRITICAL"
+            ]
         }
     },
     "feature_importances": {
         "rul": {
-            "resistance": 0.3444,
-            "impedance": 0.1895,
-            "capacity": 0.1671,
-            "time": 0.089,
-            "soh": 0.0646,
-            "current": 0.054,
-            "temperature": 0.0475,
-            "age": 0.0158,
-            "cycle": 0.0106,
-            "voltage": 0.0096,
-            "soc": 0.0077
+            "resistance": 0.3392,
+            "impedance": 0.1951,
+            "capacity": 0.1681,
+            "time": 0.0899,
+            "soh": 0.0634,
+            "current": 0.0515,
+            "temperature": 0.049,
+            "age": 0.0148,
+            "cycle": 0.0114,
+            "voltage": 0.0103,
+            "soc": 0.0073
         },
         "soh": {
-            "capacity": 0.9066,
-            "age": 0.0291,
-            "impedance": 0.0218,
-            "resistance": 0.0148,
-            "temperature": 0.007,
-            "time": 0.0062,
-            "cycle": 0.0052,
-            "current": 0.004,
-            "voltage": 0.0037,
-            "soc": 0.0016
+            "capacity": 0.9086,
+            "age": 0.0214,
+            "impedance": 0.0189,
+            "resistance": 0.0175,
+            "cycle": 0.0107,
+            "time": 0.0078,
+            "temperature": 0.0064,
+            "voltage": 0.0033,
+            "current": 0.0031,
+            "soc": 0.0023
         }
     },
     "dataset_info": {
+        "name": "NASA Ames Prognostics Center of Excellence (PCoE) Real Battery Aging Dataset",
         "rows": 2567,
+        "batteries_count": 34,
         "columns": [
             "battery_id",
             "cycle",
