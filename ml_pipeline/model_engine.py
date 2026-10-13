@@ -102,10 +102,57 @@ class BatteryHealthEngine:
             badge_class = "badge-critical"
             summary_desc = "Battery has exceeded safe automotive operational limits. High internal resistance and risk of rapid discharge."
 
-        # 4. Range Estimation (Average EV 60kWh pack ~400km range baseline)
+        # 4. Range Estimation & Longevity in Human Terms
         km_per_cycle = 280.0
         est_remaining_km = int(predicted_rul * km_per_cycle * (final_soh / 100.0))
         est_remaining_miles = int(est_remaining_km * 0.621371)
+        est_years_remaining = round(max(0.0, predicted_rul / 180.0), 1)
+
+        # Replacement urgency
+        if final_soh >= 85.0:
+            urgency = "Minimal (Long Lifespan Remaining)"
+            urgency_color = "emerald"
+        elif final_soh >= 75.0:
+            urgency = "Normal Aging (~1-2 Years Left)"
+            urgency_color = "teal"
+        elif final_soh >= 70.0:
+            urgency = "Moderate (Plan Replacement in < 6-12 Months)"
+            urgency_color = "amber"
+        else:
+            urgency = "High (Immediate Replacement / Second-Life Candidate)"
+            urgency_color = "rose"
+
+        # Impact breakdown (Explains what is driving battery degradation)
+        capacity_loss_pct = round(max(0.0, (2.0 - capacity) / 2.0 * 100.0), 1)
+        cycle_wear_level = "Low" if cycle < 100 else ("Moderate" if cycle < 250 else "High")
+        
+        if temp > 40:
+            thermal_impact = "Severe Heat Stress (Accelerating aging by ~50%)"
+            thermal_score = "Severe"
+        elif temp > 32:
+            thermal_impact = "Elevated Temperature (Accelerating aging by ~15%)"
+            thermal_score = "Warm"
+        elif temp < 10:
+            thermal_impact = "Cold Ambient (Reduced instantaneous range, sluggish ions)"
+            thermal_score = "Cold"
+        else:
+            thermal_impact = "Optimal Operating Temp (Minimal thermal penalty)"
+            thermal_score = "Optimal"
+
+        res_growth_pct = round(max(0.0, (resistance - 48.0) / 48.0 * 100.0), 1)
+        res_health = "Optimal (<60 mΩ)" if resistance < 60 else ("Normal Aging (60-90 mΩ)" if resistance < 90 else ("High Resistance (90-130 mΩ)" if resistance < 130 else "Severe Degradation (>130 mΩ)"))
+
+        impacts = {
+            "capacity_loss_pct": capacity_loss_pct,
+            "cycle_wear_level": cycle_wear_level,
+            "thermal_impact": thermal_impact,
+            "thermal_score": thermal_score,
+            "resistance_growth_pct": res_growth_pct,
+            "resistance_health": res_health,
+            "est_years_remaining": est_years_remaining,
+            "urgency": urgency,
+            "urgency_color": urgency_color
+        }
 
         # 5. Risk Factors & BMS Alerts
         advisories = []
@@ -203,12 +250,16 @@ class BatteryHealthEngine:
                 "rul_cycles": predicted_rul,
                 "est_range_km": est_remaining_km,
                 "est_range_miles": est_remaining_miles,
+                "est_years_remaining": est_years_remaining,
                 "health_status": health_status,
                 "status_color": status_color,
                 "badge_class": badge_class,
                 "summary_desc": summary_desc,
-                "risk_level": risk_level
+                "risk_level": risk_level,
+                "urgency": urgency,
+                "urgency_color": urgency_color
             },
+            "impacts": impacts,
             "advisories": advisories,
             "forecast": {
                 "cycles": forecast_cycles,

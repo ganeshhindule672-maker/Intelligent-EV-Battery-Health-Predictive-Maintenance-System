@@ -10,6 +10,31 @@ from app import app
 from ml_pipeline.model_engine import BatteryHealthEngine
 
 class TestEVBatterySystem(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        import shutil
+        import tempfile
+        cls.models_dir = os.path.join(os.path.dirname(__file__), 'models')
+        cls.backup_dir = tempfile.mkdtemp(prefix='ev_models_backup_')
+        if os.path.exists(cls.models_dir):
+            for fname in os.listdir(cls.models_dir):
+                src = os.path.join(cls.models_dir, fname)
+                dst = os.path.join(cls.backup_dir, fname)
+                shutil.copy2(src, dst)
+
+    @classmethod
+    def tearDownClass(cls):
+        import shutil
+        if hasattr(cls, 'backup_dir') and os.path.exists(cls.backup_dir):
+            for fname in os.listdir(cls.backup_dir):
+                src = os.path.join(cls.backup_dir, fname)
+                dst = os.path.join(cls.models_dir, fname)
+                try:
+                    shutil.copy2(src, dst)
+                except Exception:
+                    pass
+            shutil.rmtree(cls.backup_dir, ignore_errors=True)
+
     def setUp(self):
         self.app = app.test_client()
         self.app.testing = True
@@ -45,7 +70,7 @@ class TestEVBatterySystem(unittest.TestCase):
         # 1. Main diagnostic page
         res1 = self.app.get('/')
         self.assertEqual(res1.status_code, 200)
-        self.assertIn(b'Battery Telemetry', res1.data)
+        self.assertIn(b'Diagnostic Cockpit', res1.data)
 
         # 2. Batch upload page
         res2 = self.app.get('/batch')
