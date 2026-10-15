@@ -246,8 +246,10 @@ def api_analytics_data():
         return jsonify({"success": False, "error": str(e)}), 500
 
 if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    debug_mode = os.environ.get("FLASK_DEBUG", "True").lower() in ("1", "true")
     print("\n========================================================")
-    print("[INFO] EV Battery Life & Health Prediction System is Ready!")
-    print("[INFO] Running on http://127.0.0.1:5000")
+    print(f"[INFO] EV Battery Life & Health Prediction System is Ready!")
+    print(f"[INFO] Running on http://0.0.0.0:{port}")
     print("========================================================\n")
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)

@@ -1,0 +1,12 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.venv
+venv
+.git
+.gitignore
+*.pdf
+models_backup_test
+uploads/*
+!uploads/.gitkeep
