@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}EV Battery Life & Health Prediction System{% endblock %}</title>
+    <title>{% block title %}Intelligent EV Battery Health & Predictive Maintenance System{% endblock %}</title>
+
+    <!-- Official Brand Favicons & Icons -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link rel="alternate icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo.png') }}">
+
+    <!-- SEO & Social OpenGraph Metadata -->
+    <meta name="description" content="Intelligent EV Battery Health & Predictive Maintenance System. Real-time State of Health (SoH) and Remaining Useful Life (RUL) prediction powered by machine learning and NASA battery telemetry.">
+    <meta name="author" content="Ganesh Hindule">
+    <meta property="og:title" content="Intelligent EV Battery Health & Predictive Maintenance System">
+    <meta property="og:description" content="Predict EV battery life, degradation stages, and remaining cycles with 99.4% accuracy.">
+    <meta property="og:image" content="{{ url_for('static', filename='img/logo.png') }}">
+    <meta property="og:type" content="website">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -42,9 +56,9 @@
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
             <!-- Logo & Title -->
             <a href="{{ url_for('index') }}" class="flex items-center space-x-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-400 p-0.5 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-                    <div class="w-full h-full bg-[#0f172a] rounded-[10px] flex items-center justify-center">
-                        <i data-lucide="zap" class="w-5 h-5 text-emerald-400"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-cyan-400 to-blue-500 p-0.5 shadow-lg shadow-emerald-500/25 group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-[#0f172a] rounded-[10px] flex items-center justify-center p-1">
+                        <img src="{{ url_for('static', filename='img/favicon.svg') }}" alt="EV Battery Logo" class="w-6 h-6 object-contain drop-shadow">
                     </div>
                 </div>
                 <div>
@@ -52,7 +66,7 @@
                         <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">VoltPredict AI</span>
                         <span class="px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">v2.0 NASA & CALCE</span>
                     </div>
-                    <p class="text-xs text-slate-400">EV Battery SOH & RUL Prognostics Platform</p>
+                    <p class="text-xs text-slate-400">Intelligent EV Battery Health & Prognostics Platform</p>
                 </div>
             </a>
 
